@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 from io import StringIO
-from src.Player import Player
+from src.player import Player
 from src.logger import logger
 
 

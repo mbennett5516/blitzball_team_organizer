@@ -1,4 +1,4 @@
-from src.DataManager import *
+from src.data_manager import *
 
 dm = DataManager()
 dm.load_data("data/blitzball_players.json")

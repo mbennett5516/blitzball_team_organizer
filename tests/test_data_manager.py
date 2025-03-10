@@ -2,9 +2,9 @@ import os
 import json
 import unittest
 from io import StringIO
-from src.Player import Player
+from src.player import Player
 from unittest.mock import patch
-from src.DataManager import DataManager
+from src.data_manager import DataManager
 
 
 class TestDataManager(unittest.TestCase):

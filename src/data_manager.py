@@ -1,6 +1,6 @@
 import json
 
-from src.Player import *
+from src.player import *
 
 
 class DataManager:
