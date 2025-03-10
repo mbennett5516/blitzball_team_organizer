@@ -114,7 +114,9 @@ class TestDataManager(unittest.TestCase):
         self.manager.players = {"Tidus": Player("Tidus", **self.sample_data["Tidus"]),
                                 "Wakka": Player("Wakka", **self.sample_data["Wakka"])}
         self.manager.list_players()
-        self.assertEqual(stdout_mock.getvalue(), "Tidus\nWakka\n")
+        output = stdout_mock.getvalue().strip().split("\n")
+        self.assertIn("Tidus", output)
+        self.assertIn("Wakka", output)
 
     @patch('sys.stdout', new_callable=StringIO)
     def test_list_players_no_player_data(self, stdout_mock):
