@@ -1,11 +1,25 @@
-from data_manager import DataManager
+from src.data_manager import DataManager
 from src.player import *
+from pathlib import Path
+import json
+import os
 
 
 class Team:
     DEFAULT_PLAYERS = ["Tidus", "Datto", "Letty", "Jassu", "Botta", "Keepa"]
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    SAVE_DIR = BASE_DIR / "saved_data"
+    SAVE_DIR.mkdir(parents=True, exist_ok=True)
+
+    def __new__(cls, data_manager: DataManager):
+        if not data_manager.players:
+            print("Error: Can't create a team before loading data. Use data_manager's load_data function first.")
+            return None
+        else:
+            return super().__new__(cls)
 
     def __init__(self, data_manager: DataManager):
+
         self.players = []
         self.positions = {
             "LF": None, "RF": None, "MF": None,
@@ -62,3 +76,25 @@ class Team:
                 print(f"{i + 1}. {player.name}")
         else:
             print("Team currently empty. Add some players!")
+
+    def json_format_team(self) -> str:
+        data = {
+            "players": [player.__dict__ for player in self.players],
+            "positions": self.positions}
+        return json.dumps(data)
+
+    def save_team(self):
+        filename = input("Name your team: ")
+        if os.path.exists(self.SAVE_DIR / filename):
+            print(f"Team named {filename} already exists. Do you want to overwrite it?")
+            invalid_choice = True
+            while invalid_choice:
+                choice = input("Type 'y' to overwrite, 'n' to cancel.")
+                if choice == 'y':
+                    break
+                if choice == 'n':
+                    self.save_team()
+                    return
+                print("You must enter a valid option to continue.")
+        with open(self.SAVE_DIR / filename, 'w') as file:
+            file.write(self.json_format_team())
